@@ -1,62 +1,36 @@
 import express from "express";
-import type { Request, Response } from "express";
 import cors from "cors";
-import { MongoClient, ServerApiVersion } from 'mongodb';
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
+import { connectDB } from "./config/db";
+import { UserController } from "./controllers/userController";
 
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(process.env.MONGO_URI!, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+// Routes
+app.post('/signup', UserController.signup);
+app.post('/login', UserController.login);
 
-const db = client.db("nyb");
-const collection = db.collection("users");
-
-// authentication 
-app.post('/signup', async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-        const user = await collection.findOne({ email });
-        if (user) {
-            res.status(400).json({ message: "User already exists" });
-            return;
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        await collection.insertOne({ email, password: hashedPassword });
-        res.status(201).json({ message: "User created successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error creating user" });
-    }
-});
-
-async function run() {
+// Connect to database and start server
+async function startServer() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Failed to start server:", error);
+    process.exit(1);
   }
 }
 
-run().catch(console.dir);
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+startServer();
 
 
 
