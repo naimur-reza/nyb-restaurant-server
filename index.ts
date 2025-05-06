@@ -1,7 +1,8 @@
-import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import express from "express";
 import { connectDB } from "./config/db";
+import { OrderController } from "./controllers/orderContollers";
 import { UserController } from "./controllers/userController";
 
 dotenv.config();
@@ -14,11 +15,15 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.post('/signup', UserController.signup);
-app.post('/login', UserController.login);
-  app.get('/users', UserController.getAllUsers);
-  app.delete('/users/:id', UserController.deleteUser);
-  app.put('/users/:id', UserController.updateUser);
+app.post("/signup", UserController.signup);
+app.post("/login", UserController.login);
+app.get("/users", UserController.getAllUsers);
+app.delete("/users/:id", UserController.deleteUser);
+app.put("/users/:id", UserController.updateUser);
+
+app.get("/orders", OrderController.getAllOrders);
+app.post("/orders", OrderController.createOrder);
+app.delete("/orders/:id", OrderController.deleteOrder);
 
 // Connect to database and start server
 async function startServer() {
@@ -34,12 +39,3 @@ async function startServer() {
 }
 
 startServer();
-
-
-
-
-
-
-
-
-

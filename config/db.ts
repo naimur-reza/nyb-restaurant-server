@@ -1,5 +1,5 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
 import dotenv from "dotenv";
+import { MongoClient, ServerApiVersion } from "mongodb";
 
 dotenv.config();
 
@@ -8,11 +8,12 @@ const client = new MongoClient(process.env.MONGO_URI!, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 export const db = client.db("nyb");
 export const usersCollection = db.collection("users");
+export const ordersCollection = db.collection("orders");
 
 export async function connectDB() {
   try {
@@ -23,4 +24,4 @@ export async function connectDB() {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1);
   }
-} 
+}

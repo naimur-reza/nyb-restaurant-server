@@ -1,14 +1,15 @@
+import type { ObjectId } from "mongodb";
 
-interface Order {
-    _id: string;
-    userId: string;
-    orderDate: Date;
-    totalAmount: number;
-    status: string;
-    items: {
-        productId: string;
-        quantity: number;
-        price: number;
-    }[];
+export interface TOrder {
+  _id?: ObjectId;
+  userId: string;
+  orderDate: Date;
+  totalAmount: number;
+  status: "pending" | "completed" | "cancelled";
+  items: Array<{
+    productId: string;
+    quantity: number;
+    price: number;
+  }> | null;
+  shippingAddress: string | null;
 }
-
