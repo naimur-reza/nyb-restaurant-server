@@ -31,4 +31,48 @@ export class UserController {
             }
         }
     } 
+
+
+
+    static async getAllUsers(req: Request, res: Response): Promise<void> {
+      try {
+        const users = await UserService.getAllUsers();
+        res.status(200).json({ users });
+      } catch (error) {
+        res.status(500).json({ message: "Error fetching users" });
+      }
+    }
+
+
+    static async deleteUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: "User ID is required" });
+                return;
+            }
+            await UserService.deleteUser(id)  ;
+            res.status(200).json({ message: "User deleted successfully" });
+        } catch (error) {
+            res.status(500).json({ message: "Error deleting user" });
+        }
+    }
+
+
+    static async updateUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const { email, password } = req.body;
+            if (!id) {
+                res.status(400).json({ message: "User ID is required" });
+                return;
+            }
+            await UserService.updateUser(id, { email, password });
+            res.status(200).json({ message: "User updated successfully" });
+        } catch (error) {
+            res.status(500).json({ message: "Error updating user" });
+        }
+    }
+    
+
 } 

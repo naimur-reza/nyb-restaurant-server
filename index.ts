@@ -16,6 +16,9 @@ app.use(express.json());
 // Routes
 app.post('/signup', UserController.signup);
 app.post('/login', UserController.login);
+  app.get('/users', UserController.getAllUsers);
+  app.delete('/users/:id', UserController.deleteUser);
+  app.put('/users/:id', UserController.updateUser);
 
 // Connect to database and start server
 async function startServer() {

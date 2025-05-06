@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { usersCollection } from "../config/db";
+import { ObjectId } from "mongodb";
  
 
 export interface UserData {
@@ -38,5 +39,22 @@ export class UserService {
 
 
     return {user}
+  }
+
+
+  static async getAllUsers() {
+    const users = await usersCollection.find({}).toArray();
+    return users;
+  }
+
+  static async deleteUser(id: string) {
+    await usersCollection.deleteOne({ _id: new ObjectId(id) });
+    return {message: "User deleted successfully"};
+  }
+
+
+  static async updateUser(id: string, userData: UserData) {
+    await usersCollection.updateOne({ _id: new ObjectId(id) }, { $set: userData });
+    return {message: "User updated successfully"};
   }
 } 
