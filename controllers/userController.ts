@@ -19,14 +19,23 @@ export class UserController {
 
     static async login(req: Request, res: Response): Promise<void> {
         try {
+
+
+
             const { email, password } = req.body;
             const { user } = await UserService.login(email, password);
              
+
+
             res.status(200).json({ user });
         } catch (error) {
             if (error instanceof Error && error.message === "User not found") {
                 res.status(401).json({ message: error.message });
-            } else {
+            } 
+            else if (error instanceof Error && error.message === "Invalid password") {
+                res.status(401).json({ message: error.message });
+            }
+            else {
                 res.status(500).json({ message: "Error logging in" });
             }
         }
