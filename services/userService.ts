@@ -4,8 +4,10 @@ import { ObjectId } from "mongodb";
  
 
 export interface UserData {
+  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export class UserService {
@@ -15,8 +17,13 @@ export class UserService {
       throw new Error("User already exists");
     }
 
+    if (userData.password !== userData.confirmPassword) {
+      throw new Error("Passwords do not match");
+    }
+
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     await usersCollection.insertOne({ 
+      name: userData.name,
       email: userData.email, 
       password: hashedPassword 
     });

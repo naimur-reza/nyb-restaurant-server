@@ -4,8 +4,8 @@ import { UserService } from "../services/userService";
 export class UserController {
     static async signup(req: Request, res: Response): Promise<void> {
       try {
-        const { email, password } = req.body;
-        await UserService.createUser({ email, password });
+        const { name, email, password, confirmPassword } = req.body;
+        await UserService.createUser({name, email, password, confirmPassword });
         res.status(201).json({ message: "User created successfully" });
       } catch (error) {
         if (error instanceof Error && error.message === "User already exists") {
@@ -71,12 +71,12 @@ export class UserController {
     static async updateUser(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { email, password } = req.body;
+            const {name, email, password, confirmPassword } = req.body;
             if (!id) {
                 res.status(400).json({ message: "User ID is required" });
                 return;
             }
-            await UserService.updateUser(id, { email, password });
+            await UserService.updateUser(id, { name, email, password, confirmPassword });
             res.status(200).json({ message: "User updated successfully" });
         } catch (error) {
             res.status(500).json({ message: "Error updating user" });
