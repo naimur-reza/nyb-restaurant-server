@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { UserService } from "../services/userService";
+ 
 
 export class UserController {
     static async signup(req: Request, res: Response): Promise<void> {
@@ -23,11 +24,12 @@ export class UserController {
 
 
             const { email, password } = req.body;
-            const { user } = await UserService.login(email, password);
+            const { token, user
+            } = await UserService.login(email, password);
              
 
 
-            res.status(200).json({ user });
+            res.status(200).json({ token, user });
         } catch (error) {
             if (error instanceof Error && error.message === "User not found") {
                 res.status(401).json({ message: error.message });
@@ -36,7 +38,7 @@ export class UserController {
                 res.status(401).json({ message: error.message });
             }
             else {
-                res.status(500).json({ message: "Error logging in" });
+                res.status(500).json({ error });
             }
         }
     } 

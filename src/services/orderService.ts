@@ -1,6 +1,6 @@
 import { ordersCollection } from "../config/db";
-import type { TOrder } from "../src/types/order-type";
-
+import type { TOrder } from "../types/order-type";
+ 
 export class OrderService {
   static async createOrder(orderData: TOrder) {
     const order = await ordersCollection.insertOne(orderData);

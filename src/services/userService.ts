@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { usersCollection } from "../config/db";
 import { ObjectId } from "mongodb";
+import { generateToken } from "../utils/generateToken";
  
 
 export interface UserData {
@@ -43,9 +44,16 @@ export class UserService {
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
+ 
+
+    const token = generateToken(user.email  as string)
 
 
-    return {user}
+
+    
+
+
+    return {token, user}
   }
 
 
