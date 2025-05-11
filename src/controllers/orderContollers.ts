@@ -8,6 +8,7 @@ export class OrderController {
     try {
       const data = req.body;
       await OrderService.createOrder(data);
+    
       res.status(201).json({ message: "Order created successfully" });
     } catch (error) {
       if (error instanceof Error && error.message === "Order already exists") {
@@ -16,17 +17,7 @@ export class OrderController {
     }
   }
 
-  static async signup(req: Request, res: Response): Promise<void> {
-    try {
-      const data = req.body;
-      await OrderService.createOrder(data);
-      res.status(201).json({ message: "Order created successfully" });
-    } catch (error) {
-      if (error instanceof Error && error.message === "Order already exists") {
-        res.status(500).json({ message: "Error creating order" });
-      }
-    }
-  }
+ 
 
   static async getAllOrders(req: Request, res: Response): Promise<void> {
     try {
