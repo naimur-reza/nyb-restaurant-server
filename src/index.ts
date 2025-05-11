@@ -11,24 +11,30 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// User Routes
 app.post("/signup", UserController.signup);
 app.post("/login", UserController.login);
 app.get("/users", UserController.getAllUsers);
 app.delete("/users/:id", UserController.deleteUser);
 app.put("/users/:id", UserController.updateUser);
 
+// Order Routes
 app.get("/orders", OrderController.getAllOrders);
 app.post("/orders", OrderController.createOrder);
+app.get("/orders/:id", OrderController.getOrderById);
+app.patch("/orders/:id/status", OrderController.updateOrderStatus);
 app.delete("/orders/:id", OrderController.deleteOrder);
+app.get("/users/:userId/orders", OrderController.getOrdersByUserId);
 
 // Connect to database and start server
 async function startServer() {
