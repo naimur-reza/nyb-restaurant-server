@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import { connectDB } from "./config/db";
+import { MenuController } from "./controllers/menuController";
 import { OrderController } from "./controllers/orderContollers";
 import { UserController } from "./controllers/userController";
 
@@ -35,6 +36,12 @@ app.get("/orders/:id", OrderController.getOrderById);
 app.patch("/orders/:id/status", OrderController.updateOrderStatus);
 app.delete("/orders/:id", OrderController.deleteOrder);
 app.get("/users/:userId/orders", OrderController.getOrdersByUserId);
+
+// menus route
+app.post("/menu", MenuController.createMenuItem);
+app.get("/menu", MenuController.getAllMenuItems);
+app.delete("/menu/:id", MenuController.deleteMenuItem);
+app.patch("/menu/:id", MenuController.updateMenuStatus);
 
 // Connect to database and start server
 async function startServer() {

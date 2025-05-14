@@ -14,6 +14,7 @@ const client = new MongoClient(process.env.MONGO_URI!, {
 export const db = client.db("nyb");
 export const usersCollection = db.collection("users");
 export const ordersCollection = db.collection("orders");
+export const menuCollection = db.collection("menu");
 
 export async function connectDB() {
   try {
